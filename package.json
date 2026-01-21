@@ -1,7 +1,7 @@
 {
-  "name": "pdf-reader-pro",
-  "version": "1.0.0",
-  "description": "PDF Reader with AI integration and note-taking",
+  "name": "deepread",
+  "version": "2.0.0",
+  "description": "DeepRead - AI-powered document intelligence platform combining NotebookLM, Notion, and Adobe Acrobat",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

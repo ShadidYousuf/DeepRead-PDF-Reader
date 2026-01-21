@@ -1,25 +1,44 @@
-# PDF Reader Pro
+# DeepRead - Document Intelligence Platform
 
-A professional-grade PDF reader with AI integration, note-taking, and advanced features.
+An AI-powered document intelligence platform combining the best of NotebookLM, Notion, and Adobe Acrobat.
+
+![DeepRead](https://img.shields.io/badge/DeepRead-2.0-purple)
 
 ## Features
 
-- 📄 **PDF Viewing** - Smooth rendering with zoom and navigation
-- 🎨 **Text Highlighting** - 5 colors with persistent storage
-- 📝 **Rich Note Editor** - Font controls, colors, formatting
-- 🤖 **AI Integration** - OpenAI, Anthropic, and Gemini support
-- 🔍 **Search** - Find text across all pages
-- 💾 **Export** - Markdown, Word, and PDF formats
-- 🖼️ **Image Support** - Insert images in notes
-- ⌨️ **Keyboard Shortcuts** - Fast navigation and editing
-- 🌙 **Dark Mode** - Modern glassmorphism design
+### 📄 Multi-Document Workspace
+- Upload and manage multiple PDFs
+- Knowledge base with document indexing
+- Collections and organization
 
-## Setup
+### 🤖 AI-Powered Intelligence
+- **Smart Q&A**: Ask questions about your documents with source citations
+- **Document Summaries**: AI-generated summaries and key topics
+- **Explain Selection**: Select text and get instant AI explanations
+- Supports OpenAI, Anthropic Claude, and Google Gemini
+
+### 📝 Block-Based Editor
+- Notion-style editor with slash commands (`/` to insert blocks)
+- Headings, lists, quotes, code blocks, and more
+- Rich text formatting with keyboard shortcuts
+- Export to Markdown, Word, or PDF
+
+### 🎨 Modern Design
+- Beautiful glassmorphism UI with animated backgrounds
+- Dark mode by default
+- Responsive design for all screen sizes
+- Smooth animations and transitions
+
+### 📌 Smart Highlights
+- Highlight text in 5 colors
+- Highlights panel with quick navigation
+- Add selections directly to notes
+
+## Quick Start
 
 ### Prerequisites
-
-- Node.js 16+ and npm
-- A modern web browser
+- Node.js 16+
+- API key for at least one AI provider (Gemini recommended)
 
 ### Installation
 
@@ -30,11 +49,11 @@ A professional-grade PDF reader with AI integration, note-taking, and advanced f
 
 2. **Configure API Keys:**
    
-   Edit `.env` file and add your API keys:
-   ```
+   Edit `.env` file:
+   ```env
+   GEMINI_API_KEY=your-gemini-key-here
    OPENAI_API_KEY=sk-your-key-here
    ANTHROPIC_API_KEY=sk-ant-your-key-here
-   GEMINI_API_KEY=your-gemini-key-here
    ```
 
 3. **Start the server:**
@@ -43,64 +62,28 @@ A professional-grade PDF reader with AI integration, note-taking, and advanced f
    ```
 
 4. **Open in browser:**
-   ```
-   http://localhost:3000
-   ```
+   Navigate to `http://localhost:3000`
 
-## Usage
-
-### Opening PDFs
-- Click "Open PDF" button
-- Or drag and drop PDF files anywhere
-
-### Taking Notes
-- Use the rich text editor with formatting controls
-- Change font size and color
-- Insert images
-- Generate content with AI
-- Export to Markdown, Word, or PDF
-
-### AI Features
-- Select text and click "Explain" for AI insights
-- Use "Generate with AI" in notes toolbar
-- Upload images for AI analysis (coming soon)
-
-### Keyboard Shortcuts
+## Keyboard Shortcuts
 
 | Action | Shortcut |
 |--------|----------|
+| Search | `Cmd/Ctrl + K` |
 | Next Page | `→` |
 | Previous Page | `←` |
-| Zoom In | `Ctrl` + `+` |
-| Zoom Out | `Ctrl` + `-` |
-| Bold | `Ctrl` + `B` |
-| Italic | `Ctrl` + `I` |
-| Underline | `Ctrl` + `U` |
-| Fullscreen | `F11` |
-
-## Security
-
-API keys are stored server-side in `.env` file and never exposed to the browser. All AI requests are proxied through the backend server.
-
-## Development
-
-```bash
-# Install dependencies
-npm install
-
-# Run with auto-reload
-npm run dev
-
-# Production
-npm start
-```
+| Zoom In | `Ctrl + +` |
+| Zoom Out | `Ctrl + -` |
+| Bold | `Ctrl + B` |
+| Italic | `Ctrl + I` |
+| Underline | `Ctrl + U` |
 
 ## Tech Stack
 
-- **Frontend**: Vanilla JavaScript, PDF.js
+- **Frontend**: Vanilla JavaScript, PDF.js, Marked.js
 - **Backend**: Node.js, Express
-- **AI APIs**: OpenAI, Anthropic, Google Gemini
+- **AI**: OpenAI GPT-4, Anthropic Claude, Google Gemini
 - **Storage**: LocalStorage for notes and highlights
+- **Design**: Custom CSS with glassmorphism effects
 
 ## License
 

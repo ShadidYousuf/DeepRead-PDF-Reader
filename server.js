@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
-const fetch = require('node-fetch');
+// Native fetch is available in Node 18+
 require('dotenv').config();
 
 const app = express();
@@ -244,8 +244,125 @@ app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-app.listen(PORT, () => {
-    console.log(`🚀 PDF Reader Pro server running on http://localhost:${PORT}`);
-    console.log(`📝 API Keys loaded: ${process.env.OPENAI_API_KEY ? '✓' : '✗'} OpenAI, ${process.env.ANTHROPIC_API_KEY ? '✓' : '✗'} Anthropic, ${process.env.GEMINI_API_KEY ? '✓' : '✗'} Gemini`);
-    console.log(`🔍 Search Keys: ${process.env.GOOGLE_SEARCH_API_KEY ? '✓' : '✗'} Google`);
+// Unified AI Chat Endpoint (used by DeepRead frontend)
+app.post('/api/ai/chat', async (req, res) => {
+    try {
+        const { model, messages } = req.body;
+
+        let response;
+
+        switch (model) {
+            case 'openai':
+                response = await fetch('https://api.openai.com/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: 'gpt-4o',
+                        messages: messages,
+                        max_tokens: 2000
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('OpenAI request failed');
+                }
+
+                const openaiData = await response.json();
+                return res.json({
+                    response: openaiData.choices?.[0]?.message?.content || 'No response'
+                });
+
+            case 'anthropic':
+                // Convert messages format for Anthropic
+                const anthropicMessages = messages.filter(m => m.role !== 'system').map(m => ({
+                    role: m.role === 'user' ? 'user' : 'assistant',
+                    content: m.content
+                }));
+
+                const systemPrompt = messages.find(m => m.role === 'system')?.content || '';
+
+                response = await fetch('https://api.anthropic.com/v1/messages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': process.env.ANTHROPIC_API_KEY,
+                        'anthropic-version': '2023-06-01'
+                    },
+                    body: JSON.stringify({
+                        model: 'claude-3-sonnet-20240229',
+                        max_tokens: 2000,
+                        system: systemPrompt,
+                        messages: anthropicMessages
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Anthropic request failed');
+                }
+
+                const anthropicData = await response.json();
+                return res.json({
+                    response: anthropicData.content?.[0]?.text || 'No response'
+                });
+
+            case 'gemini':
+            default:
+                // Gemini doesn't support system role - merge it into user message
+                const systemMsg = messages.find(m => m.role === 'system');
+                const otherMessages = messages.filter(m => m.role !== 'system');
+
+                // Convert messages to Gemini format
+                const geminiContent = otherMessages.map((m, index) => {
+                    let text = m.content;
+                    // Prepend system message to first user message
+                    if (index === 0 && systemMsg && m.role === 'user') {
+                        text = `${systemMsg.content}\n\nUser question: ${m.content}`;
+                    }
+                    return {
+                        role: m.role === 'assistant' ? 'model' : 'user',
+                        parts: [{ text }]
+                    };
+                });
+
+                console.log('Gemini request with', geminiContent.length, 'messages');
+
+                response = await fetch(
+                    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=${process.env.GEMINI_API_KEY}`,
+                    {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ contents: geminiContent })
+                    }
+                );
+
+                if (!response.ok) {
+                    const errorBody = await response.text();
+                    console.error('Gemini error:', response.status, errorBody);
+                    throw new Error(`Gemini request failed: ${response.status}`);
+                }
+
+                const geminiData = await response.json();
+                console.log('Gemini response received');
+                return res.json({
+                    response: geminiData.candidates?.[0]?.content?.parts?.[0]?.text || 'No response'
+                });
+        }
+    } catch (error) {
+        console.error('AI Chat Error:', error);
+        res.status(500).json({ error: error.message });
+    }
 });
+
+app.listen(PORT, () => {
+    console.log(`\n🚀 DeepRead server running on http://localhost:${PORT}`);
+    console.log(`📚 Document Intelligence Platform`);
+    console.log(`\n🔑 API Keys:`);
+    console.log(`   ${process.env.GEMINI_API_KEY ? '✓' : '✗'} Gemini`);
+    console.log(`   ${process.env.OPENAI_API_KEY ? '✓' : '✗'} OpenAI`);
+    console.log(`   ${process.env.ANTHROPIC_API_KEY ? '✓' : '✗'} Anthropic`);
+    console.log(`\n📖 Open your browser to get started!\n`);
+});
+
