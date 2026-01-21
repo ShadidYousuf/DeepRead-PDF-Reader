@@ -815,56 +815,157 @@ body {
     border-color: var(--border-focus);
 }
 
-/* Right Panel */
+/* Right Panel (Split View) */
 .right-panel {
-    width: 400px;
-    min-width: 320px;
-    max-width: 500px;
+    width: 380px;
+    /* Bit wider for dual content */
     background: var(--glass-bg);
     backdrop-filter: blur(20px);
-    border-left: 1px solid var(--border-default);
+    border-left: 1px solid var(--glass-border);
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    z-index: 100;
+    transition: transform var(--transition-normal);
 }
 
 .right-panel.hidden {
+    transform: translateX(100%);
+    width: 0;
+    border: none;
+}
+
+/* Top Section: Notes & Highlights */
+.panel-top-section {
+    flex: 1;
+    /* Takes available space */
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Bottom Section: AI Chat */
+.panel-bottom-section {
+    height: 400px;
+    /* Default expanded height */
+    min-height: 48px;
+    /* Header height */
+    max-height: 80%;
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--border-default);
+    background: var(--bg-surface);
+    position: relative;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+    transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.panel-bottom-section.collapsed {
+    height: 48px !important;
+    overflow: hidden;
+}
+
+/* Hide content when collapsed */
+.panel-bottom-section.collapsed .chat-container,
+.panel-bottom-section.collapsed .chat-input-container,
+.panel-bottom-section.collapsed .panel-resizer {
     display: none;
 }
 
-/* Panel Tabs */
-.panel-tabs {
-    display: flex;
-    border-bottom: 1px solid var(--border-default);
+/* AI Header hover effect */
+.ai-header:hover {
+    background: var(--bg-hover);
 }
 
-.panel-tab {
-    flex: 1;
+/* Chevron Rotation */
+.chevron-icon {
+    transition: transform 0.3s ease;
+}
+
+.panel-bottom-section.collapsed .chevron-icon {
+    transform: rotate(180deg);
+}
+
+/* Resizer Handle */
+.panel-resizer {
+    height: 6px;
+    width: 100%;
+    background: transparent;
+    cursor: row-resize;
+    position: absolute;
+    top: -3px;
+    left: 0;
+    z-index: 10;
+    transition: background var(--transition-fast);
+}
+
+.panel-resizer:hover,
+.panel-resizer:active {
+    background: var(--primary-500);
+}
+
+.btn-icon-xs {
+    width: 20px;
+    height: 20px;
+    padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: var(--space-2);
-    padding: var(--space-3) var(--space-4);
     background: none;
     border: none;
-    font-size: 13px;
-    font-weight: 500;
     color: var(--text-muted);
     cursor: pointer;
-    transition: all var(--transition-fast);
-    border-bottom: 2px solid transparent;
+    border-radius: 4px;
 }
 
-.panel-tab:hover {
-    color: var(--text-secondary);
+.btn-icon-xs:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
 }
 
-.panel-tab.active {
-    color: var(--primary-400);
-    border-bottom-color: var(--primary-500);
+/* AI Header in Split View */
+.ai-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-2) var(--space-4);
+    border-bottom: 1px solid var(--border-light);
+    background: var(--bg-elevated);
 }
 
-/* Panel Content */
+.ai-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* Compact Chat Adjustments */
+.chat-container.compact {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-3);
+}
+
+.chat-welcome.compact {
+    padding: var(--space-4);
+}
+
+.chat-welcome.compact .ai-avatar {
+    width: 40px;
+    height: 40px;
+    margin-bottom: var(--space-2);
+}
+
+.chat-welcome.compact h3 {
+    font-size: 16px;
+    margin-bottom: var(--space-2);
+}
+
+/* Notes & Highlights Panel Content */
 .panel-content {
     flex: 1;
     display: none;
@@ -874,6 +975,53 @@ body {
 
 .panel-content.active {
     display: flex;
+}
+
+.highlights-content {
+    padding: 0;
+    overflow: hidden;
+}
+
+.highlights-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+/* Panel Tabs (Adjusted for Top Section) */
+.panel-tabs {
+    display: flex;
+    padding: 0 var(--space-2);
+    border-bottom: 1px solid var(--border-default);
+    background: var(--bg-surface);
+}
+
+.panel-tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    border-bottom: 2px solid transparent;
+}
+
+.panel-tab:hover {
+    color: var(--text-primary);
+    background: rgba(160, 160, 160, 0.05);
+}
+
+.panel-tab.active {
+    color: var(--text-primary);
+    border-bottom-color: var(--primary-500);
 }
 
 /* Notes Toolbar */
@@ -928,8 +1076,52 @@ body {
     color: var(--text-muted);
 }
 
+/* Editor Typography */
 .notes-editor p {
-    margin-bottom: var(--space-3);
+    font-family: var(--font-sans);
+    margin-bottom: 0.8em;
+    font-size: 15px;
+    /* readable size */
+}
+
+.notes-editor blockquote {
+    font-family: 'Georgia', serif;
+    /* Distinct serif font */
+    font-style: italic;
+    border-left: 4px solid var(--accent-purple);
+    background: rgba(160, 160, 160, 0.05);
+    /* very light bg */
+    padding: 8px 16px;
+    margin: 1em 0;
+    color: var(--text-secondary);
+    border-radius: 0 4px 4px 0;
+}
+
+.notes-editor pre,
+.notes-editor code {
+    font-family: var(--font-mono);
+    /* Distinct mono font */
+    background: rgba(0, 0, 0, 0.2);
+    /* darker bg for contrast */
+    padding: 2px 4px;
+    border-radius: 4px;
+    color: var(--accent-amber);
+    font-size: 13px;
+}
+
+.notes-editor pre {
+    padding: 12px;
+    margin: 1em 0;
+    overflow-x: auto;
+}
+
+.notes-editor h1,
+.notes-editor h2,
+.notes-editor h3 {
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    font-weight: 600;
+    color: var(--text-primary);
 }
 
 .notes-editor h1 {
@@ -2377,18 +2569,40 @@ body {
     inset: 0;
     pointer-events: none;
     z-index: 5;
+    mix-blend-mode: multiply;
+    /* Key for realistic marker effect */
 }
 
 .highlight-mark {
     pointer-events: auto;
     cursor: pointer;
-    border-radius: 3px;
-    transition: all var(--transition-fast);
+    border-radius: 2px;
+    transition: background-color var(--transition-fast);
+    /* Improve transparency for marker effect */
+    opacity: 1 !important;
+    /* Opacity handled by rgba color opacity */
 }
 
+/* Specific Highlight Colors with Marker Opacity */
+.highlight-mark[style*="rgb(255, 235, 59)"] {
+    background-color: rgba(255, 235, 59, 1) !important;
+    mix-blend-mode: multiply;
+}
+
+/* Ensure this works across themes */
+[data-theme="dark"] .highlight-layer {
+    mix-blend-mode: screen;
+}
+
+/* Invert logic for dark mode if needed, or keep multiply if background is light */
+/* Actually, for dark mode PDF viewer, pdf.js usually renders white pages regardless of UI theme. 
+   If PDF pages are white, multiply is correct. If PDF pages are inverted, screen might be needed.
+   Assuming standard PDF viewing (white pages): */
+
 .highlight-mark:hover {
-    filter: brightness(1.2);
-    transform: scale(1.02);
+    filter: brightness(0.95);
+    /* darken slightly on hover */
+    transform: scale(1.01);
 }
 
 /* Knowledge Base indicator animation */
@@ -2400,4 +2614,89 @@ body {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--primary-500);
     box-shadow: 0 0 10px rgba(160, 160, 160, 0.5);
+}
+
+/* ============================================
+   Slash Command Menu
+   ============================================ */
+.slash-menu {
+    position: fixed;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    padding: var(--space-2);
+    z-index: 1000;
+    min-width: 200px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.slash-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    cursor: pointer;
+    font-size: 14px;
+    transition: background var(--transition-fast);
+}
+
+.slash-item:hover {
+    background: var(--bg-hover);
+}
+
+.slash-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-surface);
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+/* ============================================
+   Dropdown Menu (Export, etc.)
+   ============================================ */
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    padding: var(--space-1);
+    z-index: 50;
+    min-width: 160px;
+    margin-top: var(--space-1);
+}
+
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: var(--space-2) var(--space-3);
+    text-align: left;
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 13px;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: background var(--transition-fast);
+}
+
+.dropdown-item:hover {
+    background: var(--bg-hover);
+}
+
+/* Toolbar group positioning fix */
+.toolbar-group {
+    position: relative;
 }

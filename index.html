@@ -115,11 +115,11 @@
                     </ul>
                 </div>
 
-                <!-- Collections Section -->
+                <!-- Projects Section -->
                 <div class="nav-section">
                     <div class="nav-section-header">
-                        <span>Collections</span>
-                        <button class="btn-icon-sm" id="addCollectionBtn" title="New Collection">
+                        <span>Projects</span>
+                        <button class="btn-icon-sm" id="addProjectBtn" title="New Project">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
                                 <line x1="12" y1="5" x2="12" y2="19" />
@@ -127,20 +127,15 @@
                             </svg>
                         </button>
                     </div>
-                    <ul class="nav-list collections-list" id="collectionsList">
-                        <li class="nav-item collection-item" data-collection="research">
-                            <div class="collection-color" style="background: #6b6b6b;"></div>
-                            <span>Research Papers</span>
-                            <span class="badge">0</span>
-                        </li>
-                        <li class="nav-item collection-item" data-collection="work">
-                            <div class="collection-color" style="background: #8a8a8a;"></div>
-                            <span>Work Documents</span>
-                            <span class="badge">0</span>
-                        </li>
-                        <li class="nav-item collection-item" data-collection="personal">
-                            <div class="collection-color" style="background: #a3a3a3;"></div>
-                            <span>Personal</span>
+                    <ul class="nav-list" id="projectsList">
+                        <!-- Default Project -->
+                        <li class="nav-item project-item active" data-project-id="default">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z">
+                                </path>
+                            </svg>
+                            <span>My First Project</span>
                             <span class="badge">0</span>
                         </li>
                     </ul>
@@ -408,340 +403,142 @@
                     </div>
                 </section>
 
-                <!-- Right Panel (Notes/AI) -->
+                <!-- Right Panel (Split View) -->
                 <aside class="right-panel" id="rightPanel">
-                    <!-- Panel Tabs -->
-                    <div class="panel-tabs">
-                        <button class="panel-tab active" data-panel="notes">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                <polyline points="14,2 14,8 20,8" />
-                            </svg>
-                            Notes
-                        </button>
-                        <button class="panel-tab" data-panel="ai">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <path d="M12 2a10 10 0 1 0 10 10H12V2z" />
-                                <circle cx="12" cy="12" r="3" />
-                            </svg>
-                            AI Assistant
-                        </button>
-                    </div>
-
-                    <!-- Notes Panel -->
-                    <div class="panel-content notes-content active" id="notesContent">
-                        <!-- Notes Toolbar -->
-                        <div class="notes-toolbar">
-                            <div class="toolbar-group">
-                                <select class="select-sm" id="blockTypeSelect">
-                                    <option value="p">Text</option>
-                                    <option value="h1">Heading 1</option>
-                                    <option value="h2">Heading 2</option>
-                                    <option value="h3">Heading 3</option>
-                                    <option value="quote">Quote</option>
-                                    <option value="code">Code</option>
-                                </select>
-                            </div>
-                            <div class="toolbar-group format-buttons">
-                                <button class="btn-icon-sm" data-format="bold" title="Bold (Ctrl+B)">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z" />
-                                        <path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z" />
-                                    </svg>
-                                </button>
-                                <button class="btn-icon-sm" data-format="italic" title="Italic (Ctrl+I)">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <line x1="19" y1="4" x2="10" y2="4" />
-                                        <line x1="14" y1="20" x2="5" y2="20" />
-                                        <line x1="15" y1="4" x2="9" y2="20" />
-                                    </svg>
-                                </button>
-                                <button class="btn-icon-sm" data-format="underline" title="Underline (Ctrl+U)">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <path d="M6 3v7a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3" />
-                                        <line x1="4" y1="21" x2="20" y2="21" />
-                                    </svg>
-                                </button>
-                                <div class="separator"></div>
-                                <button class="btn-icon-sm" data-format="insertUnorderedList" title="Bullet List">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <line x1="8" y1="6" x2="21" y2="6" />
-                                        <line x1="8" y1="12" x2="21" y2="12" />
-                                        <line x1="8" y1="18" x2="21" y2="18" />
-                                        <circle cx="4" cy="6" r="1" fill="currentColor" />
-                                        <circle cx="4" cy="12" r="1" fill="currentColor" />
-                                        <circle cx="4" cy="18" r="1" fill="currentColor" />
-                                    </svg>
-                                </button>
-                                <button class="btn-icon-sm" data-format="insertOrderedList" title="Numbered List">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <line x1="10" y1="6" x2="21" y2="6" />
-                                        <line x1="10" y1="12" x2="21" y2="12" />
-                                        <line x1="10" y1="18" x2="21" y2="18" />
-                                        <text x="3" y="8" font-size="8" fill="currentColor">1</text>
-                                        <text x="3" y="14" font-size="8" fill="currentColor">2</text>
-                                        <text x="3" y="20" font-size="8" fill="currentColor">3</text>
-                                    </svg>
-                                </button>
-                            </div>
-                            <div class="toolbar-group">
-                                <button class="btn-icon-sm" id="insertImageBtn" title="Insert Image">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                                        <circle cx="8.5" cy="8.5" r="1.5" />
-                                        <polyline points="21 15 16 10 5 21" />
-                                    </svg>
-                                </button>
-                                <input type="file" id="noteImageInput" accept="image/*" hidden>
-                            </div>
-                            <div class="toolbar-spacer"></div>
-                            <div class="toolbar-group">
-                                <button class="btn-sm btn-ghost" id="exportNotesBtn">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                        <polyline points="7 10 12 15 17 10" />
-                                        <line x1="12" y1="15" x2="12" y2="3" />
-                                    </svg>
-                                    Export
-                                </button>
-                                <!-- Export Menu -->
-                                <div class="dropdown-menu hidden" id="exportMenu">
-                                    <button class="dropdown-item" data-format="md">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                            stroke="currentColor" stroke-width="2">
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                        </svg>
-                                        Markdown (.md)
-                                    </button>
-                                    <button class="dropdown-item" data-format="docx">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                            stroke="currentColor" stroke-width="2">
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                        </svg>
-                                        Word (.docx)
-                                    </button>
-                                    <button class="dropdown-item" data-format="pdf">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                            stroke="currentColor" stroke-width="2">
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                        </svg>
-                                        PDF (.pdf)
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Notes Editor -->
-                        <div class="notes-editor-container">
-                            <div class="notes-editor" id="notesEditor" contenteditable="true">
-                                <p data-placeholder="Start writing... Type '/' for commands"></p>
-                            </div>
-                        </div>
-
-                        <!-- Slash Command Menu -->
-                        <div class="slash-menu hidden" id="slashMenu">
-                            <div class="slash-menu-header">Blocks</div>
-                            <button class="slash-item" data-type="p">
-                                <div class="slash-icon">¶</div>
-                                <div class="slash-info">
-                                    <span class="slash-title">Text</span>
-                                    <span class="slash-desc">Plain text paragraph</span>
-                                </div>
-                            </button>
-                            <button class="slash-item" data-type="h1">
-                                <div class="slash-icon">H1</div>
-                                <div class="slash-info">
-                                    <span class="slash-title">Heading 1</span>
-                                    <span class="slash-desc">Large section heading</span>
-                                </div>
-                            </button>
-                            <button class="slash-item" data-type="h2">
-                                <div class="slash-icon">H2</div>
-                                <div class="slash-info">
-                                    <span class="slash-title">Heading 2</span>
-                                    <span class="slash-desc">Medium section heading</span>
-                                </div>
-                            </button>
-                            <button class="slash-item" data-type="h3">
-                                <div class="slash-icon">H3</div>
-                                <div class="slash-info">
-                                    <span class="slash-title">Heading 3</span>
-                                    <span class="slash-desc">Small section heading</span>
-                                </div>
-                            </button>
-                            <button class="slash-item" data-type="ul">
-                                <div class="slash-icon">•</div>
-                                <div class="slash-info">
-                                    <span class="slash-title">Bullet List</span>
-                                    <span class="slash-desc">Unordered list</span>
-                                </div>
-                            </button>
-                            <button class="slash-item" data-type="ol">
-                                <div class="slash-icon">1.</div>
-                                <div class="slash-info">
-                                    <span class="slash-title">Numbered List</span>
-                                    <span class="slash-desc">Ordered list</span>
-                                </div>
-                            </button>
-                            <button class="slash-item" data-type="todo">
-                                <div class="slash-icon">☐</div>
-                                <div class="slash-info">
-                                    <span class="slash-title">To-do</span>
-                                    <span class="slash-desc">Checkbox item</span>
-                                </div>
-                            </button>
-                            <button class="slash-item" data-type="quote">
-                                <div class="slash-icon">"</div>
-                                <div class="slash-info">
-                                    <span class="slash-title">Quote</span>
-                                    <span class="slash-desc">Quotation block</span>
-                                </div>
-                            </button>
-                            <button class="slash-item" data-type="code">
-                                <div class="slash-icon">&lt;/&gt;</div>
-                                <div class="slash-info">
-                                    <span class="slash-title">Code</span>
-                                    <span class="slash-desc">Code block</span>
-                                </div>
-                            </button>
-                            <button class="slash-item" data-type="divider">
-                                <div class="slash-icon">—</div>
-                                <div class="slash-info">
-                                    <span class="slash-title">Divider</span>
-                                    <span class="slash-desc">Horizontal line</span>
-                                </div>
-                            </button>
-                            <div class="slash-menu-header">AI</div>
-                            <button class="slash-item" data-type="ai-summarize">
-                                <div class="slash-icon">✨</div>
-                                <div class="slash-info">
-                                    <span class="slash-title">Summarize</span>
-                                    <span class="slash-desc">AI summary of document</span>
-                                </div>
-                            </button>
-                            <button class="slash-item" data-type="ai-explain">
-                                <div class="slash-icon">💡</div>
-                                <div class="slash-info">
-                                    <span class="slash-title">Explain</span>
-                                    <span class="slash-desc">AI explanation</span>
-                                </div>
-                            </button>
-                        </div>
-
-                        <!-- Highlights Section -->
-                        <div class="highlights-section">
-                            <div class="section-header" id="highlightsToggle">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    <!-- Top Half: Notes & Highlights (Tabs) -->
+                    <div class="panel-top-section">
+                        <!-- Panel Tabs -->
+                        <div class="panel-tabs">
+                            <button class="panel-tab active" data-panel="notes">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2">
-                                    <polyline points="6 9 12 15 18 9" />
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                    <polyline points="14,2 14,8 20,8" />
                                 </svg>
-                                <span>Highlights</span>
-                                <span class="badge" id="highlightCount">0</span>
+                                Notes
+                            </button>
+                            <button class="panel-tab" data-panel="highlights">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M9 11l3 3L22 4" />
+                                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                                </svg>
+                                Highlights
+                            </button>
+                        </div>
+
+                        <!-- Notes Panel -->
+                        <div class="panel-content notes-content active" id="notesContent">
+                            <!-- Notes Toolbar -->
+                            <div class="notes-toolbar">
+                                <div class="toolbar-group">
+                                    <select class="select-sm" id="blockTypeSelect">
+                                        <option value="p">Text</option>
+                                        <option value="h1">Heading 1</option>
+                                        <option value="h2">Heading 2</option>
+                                        <option value="h3">Heading 3</option>
+                                        <option value="blockquote">Quote</option>
+                                        <option value="pre">Code</option>
+                                    </select>
+                                </div>
+                                <div class="toolbar-group format-buttons">
+                                    <button class="btn-icon-sm" data-format="bold" title="Bold (Ctrl+B)">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z" />
+                                            <path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z" />
+                                        </svg>
+                                    </button>
+                                    <button class="btn-icon-sm" data-format="italic" title="Italic (Ctrl+I)">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <line x1="19" y1="4" x2="10" y2="4" />
+                                            <line x1="14" y1="20" x2="5" y2="20" />
+                                            <line x1="15" y1="4" x2="9" y2="20" />
+                                        </svg>
+                                    </button>
+                                    <button class="btn-icon-sm" data-format="underline" title="Underline (Ctrl+U)">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M6 3v7a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3" />
+                                            <line x1="4" y1="21" x2="20" y2="21" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="toolbar-spacer"></div>
+                                <div class="toolbar-group">
+                                    <button class="btn-sm btn-ghost" id="exportNotesBtn">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                            <polyline points="7 10 12 15 17 10" />
+                                            <line x1="12" y1="15" x2="12" y2="3" />
+                                        </svg>
+                                        Export
+                                    </button>
+                                    <!-- Export Dropdown Menu -->
+                                    <div class="dropdown-menu hidden" id="exportMenu">
+                                        <button class="dropdown-item" data-format="md">Markdown (.md)</button>
+                                        <button class="dropdown-item" data-format="txt">Text (.txt)</button>
+                                    </div>
+                                </div>
                             </div>
+
+                            <!-- Notes Editor -->
+                            <div class="notes-editor-container">
+                                <div class="notes-editor" id="notesEditor" contenteditable="true">
+                                    <p data-placeholder="Start writing... Type '/' for commands"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Highlights List Panel (Now separated) -->
+                        <div class="panel-content highlights-content" id="highlightsContent">
                             <div class="highlights-list" id="highlightsList">
                                 <p class="empty-state">No highlights yet</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- AI Panel -->
-                    <div class="panel-content ai-content" id="aiContent">
-                        <!-- AI Settings -->
-                        <div class="ai-settings">
-                            <select class="select-sm" id="aiModelSelect">
-                                <option value="gemini">Google Gemini</option>
-                                <option value="openai">OpenAI GPT-4</option>
-                                <option value="anthropic">Anthropic Claude</option>
-                            </select>
-                            <button class="btn-icon-sm" id="aiSettingsBtn" title="AI Settings">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <circle cx="12" cy="12" r="3" />
-                                    <path
-                                        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9" />
-                                </svg>
-                            </button>
-                        </div>
-
-                        <!-- Document Summary -->
-                        <div class="ai-summary-card hidden" id="aiSummaryCard">
-                            <div class="summary-header">
+                    <!-- Bottom Half: AI Chat (Docked) -->
+                    <div class="panel-bottom-section">
+                        <div class="panel-resizer"></div>
+                        <div class="ai-header" id="aiPanelHeader" style="cursor: pointer;">
+                            <div class="ai-title">
+                                <button class="btn-icon-xs" id="toggleAiPanelBtn">
+                                    <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <polyline points="18 15 12 9 6 15"></polyline>
+                                    </svg>
+                                </button>
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                    <path d="M12 2a10 10 0 1 0 10 10H12V2z" />
+                                    <circle cx="12" cy="12" r="3" />
                                 </svg>
-                                <span>Document Summary</span>
+                                <span>AI Assistant</span>
                             </div>
-                            <div class="summary-content" id="summaryContent">
-                                <!-- AI generated summary -->
-                            </div>
-                            <div class="summary-topics" id="summaryTopics">
-                                <!-- Key topics tags -->
-                            </div>
+                            <select class="select-xs" id="aiModelSelect">
+                                <option value="gemini">Gemini 2.5 Pro</option>
+                                <option value="openai">GPT-4</option>
+                                <option value="anthropic">Claude 3.5</option>
+                            </select>
                         </div>
 
-                        <!-- Chat Container -->
-                        <div class="chat-container" id="chatContainer">
-                            <!-- Welcome Message -->
-                            <div class="chat-welcome" id="chatWelcome">
-                                <div class="ai-avatar">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <path d="M12 2a10 10 0 1 0 10 10H12V2z" />
-                                        <circle cx="12" cy="12" r="3" />
-                                    </svg>
-                                </div>
-                                <h3>AI Assistant</h3>
-                                <p>Ask questions about your documents. I'll provide answers with source citations.</p>
-
-                                <div class="suggested-questions" id="suggestedQuestions">
-                                    <button class="suggestion-chip">Summarize this document</button>
-                                    <button class="suggestion-chip">What are the key points?</button>
-                                    <button class="suggestion-chip">Explain the main concepts</button>
-                                </div>
-                            </div>
-
+                        <div class="chat-container compact" id="chatContainer">
                             <!-- Chat Messages -->
                             <div class="chat-messages" id="chatMessages">
-                                <!-- Messages rendered here -->
+                                <div class="chat-welcome compact" id="chatWelcome">
+                                    <p class="text-sm text-center text-muted">Ask anything about your documents...</p>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Chat Input -->
                         <div class="chat-input-container">
-                            <div class="chat-actions">
-                                <button class="btn-icon-sm" id="explainSelectionBtn" title="Explain Selection">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <circle cx="12" cy="12" r="10" />
-                                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-                                        <line x1="12" y1="17" x2="12.01" y2="17" />
-                                    </svg>
-                                </button>
-                                <button class="btn-icon-sm" id="aiImageBtn" title="Upload Image">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                                        <circle cx="8.5" cy="8.5" r="1.5" />
-                                        <polyline points="21 15 16 10 5 21" />
-                                    </svg>
-                                </button>
-                                <input type="file" id="aiImageInput" accept="image/*" hidden>
-                            </div>
                             <div class="chat-input-wrapper">
-                                <textarea id="chatInput" placeholder="Ask anything about your documents..."
-                                    rows="1"></textarea>
-                                <button class="btn-primary btn-icon" id="sendMessageBtn">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                <textarea id="chatInput" placeholder="Ask AI..." rows="1"></textarea>
+                                <button class="btn-primary btn-icon-sm" id="sendMessageBtn">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2">
                                         <line x1="22" y1="2" x2="11" y2="13" />
                                         <polygon points="22,2 15,22 11,13 2,9" />
@@ -857,6 +654,34 @@
             <div class="spinner-ring"></div>
         </div>
         <p id="loadingText">Loading...</p>
+    </div>
+
+    <!-- Slash Command Menu -->
+    <div class="slash-menu hidden" id="slashMenu">
+        <div class="slash-item" data-type="h1">
+            <span class="slash-icon">H1</span> Heading 1
+        </div>
+        <div class="slash-item" data-type="h2">
+            <span class="slash-icon">H2</span> Heading 2
+        </div>
+        <div class="slash-item" data-type="h3">
+            <span class="slash-icon">H3</span> Heading 3
+        </div>
+        <div class="slash-item" data-type="quote">
+            <span class="slash-icon">"</span> Quote
+        </div>
+        <div class="slash-item" data-type="code">
+            <span class="slash-icon">&lt;/&gt;</span> Code
+        </div>
+        <div class="slash-item" data-type="ul">
+            <span class="slash-icon">•</span> Bullet List
+        </div>
+        <div class="slash-item" data-type="ol">
+            <span class="slash-icon">1.</span> Numbered List
+        </div>
+        <div class="slash-item" data-type="divider">
+            <span class="slash-icon">—</span> Divider
+        </div>
     </div>
 
     <script src="script.js"></script>
